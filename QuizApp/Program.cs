@@ -2,35 +2,32 @@
 using QuizApp.fronted;
 
 var game = new Game();
-game.CreateQuestions();
 Display.DisplayWelcome();
-var question = game.DrawQuestion();
-var number = Display.DisplayQuestion(question);
 
-// tylko testowo
-// zmienimy te logikę na następnych zajęciach
-bool ok = false;
-
-foreach (var answer in question.Answers)
+while (true)
 {
-    if (answer.Id == number)
+    game.DrawQuestion();
+    var number = Display.DisplayQuestion(game.CurrentQuestion);
+    if (game.IsCorrectAnswer(number))
     {
-        if (answer.IsCorrect == true)
+        if (game.IsLastQuestion())
         {
-            ok = true;
+            Display.SuccessText(game.PlayerPoints);
+            break;
         }
+        else
+        {
+            Display.GoodAnswerText(game.CurrentQuestion.Category);
+        }
+
+    }
+    else
+    {
+        Display.GameOverText();
+        break;
     }
 }
 
-if (ok == true)
-{
-    // narazie
-    Console.WriteLine(" HURRA tO PRAWIDŁOWA ODPOWIEDŻ !!!");
-}
-else
-{
-    Display.GameOver(); 
-}
 
 
 
@@ -41,4 +38,3 @@ else
 
 
 
-Console.ReadLine();
